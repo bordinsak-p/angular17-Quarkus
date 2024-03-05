@@ -1,0 +1,49 @@
+<div class="mt-4">
+  <div class="text-right mb-2">
+    <button pButton pRipple label="เพิ่มข้อมูล" class="p-button-success" (click)="onSave()"><i class="pi pi-plus mx-2"></i></button>
+  </div>
+
+  <p-table
+    [value]="tableValue"
+    [tableStyle]="{ 'min-width': '60rem' }"
+    [rowsPerPageOptions]="[5, 10, 20]"
+    currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
+    [paginator]="true"
+    [rows]="5"
+    styleClass="p-datatable-striped" 
+    [tableStyle]="{'min-width': '50rem'}"
+  >
+    <ng-template pTemplate="header">
+      <tr>
+        <th pSortableColumn="id" style="width: 20%">
+          id <p-sortIcon field="id"></p-sortIcon>
+        </th>
+        <th pSortableColumn="firstName" style="width: 20%">
+          firstName <p-sortIcon field="firstName"></p-sortIcon>
+        </th>
+        <th pSortableColumn="lastName" style="width: 20%">
+          lastName <p-sortIcon field="lastName"></p-sortIcon>
+        </th>
+        <th pSortableColumn="gender" style="width: 20%">
+          gender <p-sortIcon field="gender"></p-sortIcon>
+        </th>
+        <th pSortableColumn="code" style="width: 20%">
+          department code <p-sortIcon field="code"></p-sortIcon>
+        </th>
+        <th pSortableColumn="name" style="width: 20%">
+          department name <p-sortIcon field="name"></p-sortIcon>
+        </th>
+      </tr>
+    </ng-template>
+    <ng-template pTemplate="body" let-product>
+      <tr>
+        <td>{{ product.id }}</td>
+        <td>{{ product.firstName }}</td>
+        <td>{{ product.lastName }}</td>
+        <td>{{ product.gender }}</td>
+        <td>{{ product.department.code }}</td>
+        <td>{{ product.department.name }}</td>
+      </tr>
+    </ng-template>
+  </p-table>
+</div>
