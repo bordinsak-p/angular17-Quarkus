@@ -1,21 +1,45 @@
-<p-panel header="ค้นหาข้อมูล">
+<p-panel header="ค้นหาข้อมูล พนักงาน">
   <form [formGroup]="employeeForm">
-    <div class="grid">
-      <label class="col-2">Department</label>
-      <div class="col-4">
-        <p-dropdown
-          placeholder="Select a Department"
-          [options]="departments"
-          formControlName="department"
-          optionLabel="name"
-        >
-        </p-dropdown>
-      </div>
-    </div>
-    <div class="grid">
-      <div class="col-2">Gender</div>
-      <div class="col-6">
-        <div class="grid">
+    <div class="content">
+      <div class="grid">
+        <div class="col-6">
+          <label class="block mb-2"
+            >ชื่อจริง<span style="color: red">*</span></label
+          >
+          <input
+            type="text"
+            class="w-full"
+            pInputText
+            placeholder="กรอกชื่อจริง"
+            formControlName="firstname"
+          />
+        </div>
+        <div class="col-6">
+          <label class="block mb-2"
+            >นามสกุล<span style="color: red">*</span></label
+          >
+          <input
+            type="text"
+            class="w-full"
+            pInputText
+            placeholder="กรอกนามสกุล"
+            formControlName="lastname"
+          />
+        </div>
+        <div class="col-6">
+          <label class="block mb-2"
+            >แผนก<span style="color: red">*</span></label
+          >
+          <p-dropdown
+            [options]="departments"
+            optionLabel="name"
+            formControlName="department"
+            [style]="{ width: '100%' }"
+            placeholder="เลือกแผนกงาน"
+          ></p-dropdown>
+        </div>
+        <div class="col-6">
+          <label class="block mb-2">เพศ<span style="color: red">*</span></label>
           <div class="flex">
             <div class="col-2 mx-3" *ngFor="let item of Gender | keyvalue">
               <p-radioButton
@@ -28,25 +52,26 @@
         </div>
       </div>
     </div>
-    <div class="grid">
-      <div class="col-2">FirstName</div>
-      <div class="col-4">
-        <input type="text" pInputText formControlName="firstname" />
-      </div>
-    </div>
-    <div class="grid">
-      <div class="col-2">LastName</div>
-      <div class="col-4">
-        <input type="text" pInputText formControlName="lastname" />
-      </div>
-    </div>
   </form>
-  
+
   <div class="text-center my-5">
-    <button pButton pRipple label="เคลียร์" class="p-button-warning mr-2" (click)="onClear()"><i class="pi pi-eraser mx-2"></i></button>
-    <button pButton pRipple label="ค้นหา" class="p-button" (click)="onSearch()"><i class="pi pi-search mx-2"></i></button>
+    <button
+      pButton
+      pRipple
+      label="เคลียร์"
+      class="p-button-warning mr-2"
+      (click)="onClear()"
+    >
+      <i class="pi pi-eraser mx-2"></i>
+    </button>
+    <button pButton pRipple label="ค้นหา" class="p-button" (click)="onSearch()">
+      <i class="pi pi-search mx-2"></i>
+    </button>
   </div>
 
   <!-- table search component -->
-  <app-search-table [tableValue]="employees" (employeesEvent)="onQueryTableAfterDelete($event)"></app-search-table>
+  <app-search-table
+    [tableValue]="employees"
+    (employeesEvent)="onQueryTableAfterDelete($event)"
+  ></app-search-table>
 </p-panel>

@@ -44,6 +44,7 @@ export class SaveEmployeeComponent implements OnInit {
   id!: number;
   Gender = Gender;
   btnStatus: boolean = false;
+  titleHeader: string = "บันทึกข้อมูล พนักงาน";
   departments: Department[] = DEPARTMENT_TYPE;
 
   fb = inject(FormBuilder);
@@ -76,6 +77,7 @@ export class SaveEmployeeComponent implements OnInit {
       this.employeeSerivc.getEmployeeById(id).subscribe((res: Employee[]) => {
         this.saveForm.patchValue(res);
         this.btnStatus = true;
+        this.titleHeader = "แก้ไขข้อมูล พนักงาน"
       });
     }
   }
@@ -86,12 +88,15 @@ export class SaveEmployeeComponent implements OnInit {
       this.employeeSerivc.updateEmployee(payload).subscribe(res => {
         this.route.navigate(['/'])
       })
-    } else {
-      const payload = this.saveForm.getRawValue()
-      this.employeeSerivc.addEmployee(payload).subscribe((res) => {
-        this.saveForm.reset()
-      })
-    }
+    } else if(this.saveForm.valid) {
+        const payload = this.saveForm.getRawValue()
+        this.employeeSerivc.addEmployee(payload).subscribe((res) => {
+          alert("บันทึกข้อมูลพนักงาน สำเร็จ!!")
+          this.saveForm.reset()
+        })
+      } else {
+        alert("กรุณากรอกข้อมูล")
+      }
   }
 
   onClear(): void {
