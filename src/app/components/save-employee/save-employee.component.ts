@@ -8,7 +8,7 @@ import {
   ReactiveFormsModule,
   Validators,
 } from '@angular/forms';
-import { ActivatedRoute, RouterModule } from '@angular/router';
+import { ActivatedRoute, Router, RouterModule } from '@angular/router';
 import { ButtonModule } from 'primeng/button';
 import { DropdownModule } from 'primeng/dropdown';
 import { InputTextModule } from 'primeng/inputtext';
@@ -19,6 +19,7 @@ import { DEPARTMENT_TYPE } from '../../constants/department.constant';
 import { Department } from '../../model/department';
 import { Mode } from '../../constants/mode.constant';
 import { EmployeeService } from '../../services/employee.service';
+import { Employee } from '../../model/employee';
 
 @Component({
   selector: 'app-save-employee',
@@ -42,11 +43,13 @@ export class SaveEmployeeComponent implements OnInit {
   mode!: Mode;
   id!: number;
   Gender = Gender;
+  btnStatus: boolean = false;
   departments: Department[] = DEPARTMENT_TYPE;
 
   fb = inject(FormBuilder);
+  route = inject(Router);
   activeRoute = inject(ActivatedRoute);
-  employeeSerivc = inject(EmployeeService)
+  employeeSerivc = inject(EmployeeService);
 
   saveForm: FormGroup = this.fb.group({
     firstName: new FormControl(null, [
@@ -61,12 +64,33 @@ export class SaveEmployeeComponent implements OnInit {
   ngOnInit(): void {
     const { mode } = this.activeRoute.snapshot.data;
     const { id } = this.activeRoute.snapshot.params;
-    
+
     this.mode = mode;
     this.id = id;
+
+    console.log(mode);
     
-    if(id && Mode.EDIT === mode) {
-      
+
+    // check mode edit
+    if (id && Mode.EDIT === mode) {
+      this.employeeSerivc.getEmployeeById(id).subscribe((res: Employee[]) => {
+        this.saveForm.patchValue(res);
+        this.btnStatus = true;
+      });
+    }
+  }
+
+  onSaveAndEdit() {
+    if(Mode.EDIT === this.mode) {
+      const payload = this.saveForm.getRawValue()
+      this.employeeSerivc.updateEmployee(payload).subscribe(res => {
+        this.route.navigate(['/'])
+      })
+    } else {
+      const payload = this.saveForm.getRawValue()
+      this.employeeSerivc.addEmployee(payload).subscribe((res) => {
+        this.saveForm.reset()
+      })
     }
   }
 

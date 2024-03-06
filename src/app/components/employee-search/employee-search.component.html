@@ -48,5 +48,5 @@
   </div>
 
   <!-- table search component -->
-  <app-search-table [tableValue]="employees"></app-search-table>
+  <app-search-table [tableValue]="employees" (employeesEvent)="onQueryTableAfterDelete($event)"></app-search-table>
 </p-panel>

@@ -68,6 +68,11 @@ export class EmployeeSearchComponent implements OnInit {
       this.employees = res;
     });
   }
+  
+  onQueryTableAfterDelete(employee: any) {
+    this.employees = employee
+    this.onQueryTable();
+  }
 
   onSearch(): void {
     const employeeData = this.employeeForm.getRawValue();
