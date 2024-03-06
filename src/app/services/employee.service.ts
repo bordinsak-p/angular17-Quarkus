@@ -2,7 +2,6 @@ import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable, inject } from '@angular/core';
 import { Observable } from 'rxjs';
 import { Employee } from '../model/employee';
-import { environment } from '../../environments/environment.development';
 
 @Injectable({
   providedIn: 'root',
@@ -10,24 +9,25 @@ import { environment } from '../../environments/environment.development';
 export class EmployeeService {
   http = inject(HttpClient)
 
-  getEmployeeSearch(HttpParams: HttpParams): Observable<Employee[]> {
-    return this.http.get<Employee[]>(`/api/employee/search`, { params: HttpParams });
-  }
   
   getEmployee(): Observable<Employee[]> {
     return this.http.get<Employee[]>(`/api/employee`);
   }
   
+  getEmployeeSearch(HttpParams: HttpParams): Observable<Employee[]> {
+    return this.http.get<Employee[]>(`/api/employee/search`, { params: HttpParams });
+  }
+
   getEmployeeById(id: number): Observable<Employee[]> {
     return this.http.get<Employee[]>(`/api/employee/${id}`);
   }
 
-  addEmployee(data: any): Observable<Employee[]> {
-    return this.http.post<Employee[]>(`${environment.apiUrl}employee`, data);
+  addEmployee(employee: Employee): Observable<Employee[]> {
+    return this.http.post<Employee[]>(`/api/employee`, employee);
   }
 
-  updateEmployee(data: any): Observable<Employee[]> {
-    return this.http.put<Employee[]>(`${environment.apiUrl}employee`, data);
+  updateEmployee(employee: Employee): Observable<any> {
+    return this.http.put<any>(`/api/employee`, employee);
   }
 
   deleteEmployeeById(id: number): Observable<Employee[]> {

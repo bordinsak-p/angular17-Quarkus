@@ -1,4 +1,4 @@
-import { Component, Inject, OnInit } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { Department } from '../../model/department';
 import { RouterOutlet } from '@angular/router';
 import {

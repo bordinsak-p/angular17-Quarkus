@@ -44,13 +44,13 @@ export class SaveEmployeeComponent implements OnInit {
   id!: number;
   Gender = Gender;
   btnStatus: boolean = false;
-  titleHeader: string = "บันทึกข้อมูล พนักงาน";
+  titleHeader: string = 'บันทึกข้อมูล พนักงาน';
   departments: Department[] = DEPARTMENT_TYPE;
 
   fb = inject(FormBuilder);
   route = inject(Router);
   activeRoute = inject(ActivatedRoute);
-  employeeSerivc = inject(EmployeeService);
+  employeeSerivce = inject(EmployeeService);
 
   saveForm: FormGroup = this.fb.group({
     firstName: new FormControl(null, [
@@ -60,6 +60,8 @@ export class SaveEmployeeComponent implements OnInit {
     lastName: new FormControl(null, [Validators.required]),
     gender: new FormControl(Gender.MALE),
     department: new FormControl(null),
+    version: new FormControl(null),
+    id: new FormControl(null),
   });
 
   ngOnInit(): void {
@@ -69,34 +71,30 @@ export class SaveEmployeeComponent implements OnInit {
     this.mode = mode;
     this.id = id;
 
-    console.log(mode);
-    
-
     // check mode edit
     if (id && Mode.EDIT === mode) {
-      this.employeeSerivc.getEmployeeById(id).subscribe((res: Employee[]) => {
+      this.employeeSerivce.getEmployeeById(id).subscribe((res: Employee[]) => {
         this.saveForm.patchValue(res);
         this.btnStatus = true;
-        this.titleHeader = "แก้ไขข้อมูล พนักงาน"
+        this.titleHeader = 'แก้ไขข้อมูล พนักงาน';
       });
     }
   }
 
   onSaveAndEdit() {
-    if(Mode.EDIT === this.mode) {
-      const payload = this.saveForm.getRawValue()
-      this.employeeSerivc.updateEmployee(payload).subscribe(res => {
-        this.route.navigate(['/'])
-      })
-    } else if(this.saveForm.valid) {
-        const payload = this.saveForm.getRawValue()
-        this.employeeSerivc.addEmployee(payload).subscribe((res) => {
-          alert("บันทึกข้อมูลพนักงาน สำเร็จ!!")
-          this.saveForm.reset()
-        })
-      } else {
-        alert("กรุณากรอกข้อมูล")
-      }
+    if (Mode.EDIT == this.mode) {
+      const payload = this.saveForm.getRawValue();            
+      this.employeeSerivce.updateEmployee(payload).subscribe((res) => {
+        alert('แก้ไขข้อมูลพนักงาน สำเร็จ!!');
+        this.route.navigate(['/']);
+      });
+    } else {
+      const payload = this.saveForm.getRawValue();
+      this.employeeSerivce.addEmployee(payload).subscribe((res) => {
+        alert('บันทึกข้อมูลพนักงาน สำเร็จ!!');
+        this.saveForm.reset();
+      });
+    }
   }
 
   onClear(): void {
