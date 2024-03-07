@@ -20,6 +20,8 @@ import { Department } from '../../model/department';
 import { Mode } from '../../constants/mode.constant';
 import { EmployeeService } from '../../services/employee.service';
 import { Employee } from '../../model/employee';
+import { ToastModule } from 'primeng/toast';
+import { MessageService } from 'primeng/api';
 
 @Component({
   selector: 'app-save-employee',
@@ -34,6 +36,7 @@ import { Employee } from '../../model/employee';
     RouterModule,
     RadioButtonModule,
     FormsModule,
+    ToastModule
   ],
   providers: [EmployeeService],
   templateUrl: './save-employee.component.html',
@@ -51,6 +54,7 @@ export class SaveEmployeeComponent implements OnInit {
   route = inject(Router);
   activeRoute = inject(ActivatedRoute);
   employeeSerivce = inject(EmployeeService);
+  messageService = inject(MessageService);
 
   saveForm: FormGroup = this.fb.group({
     firstName: new FormControl(null, [
@@ -82,16 +86,16 @@ export class SaveEmployeeComponent implements OnInit {
   }
 
   onSaveAndEdit() {
+    const payload = this.saveForm.getRawValue() as Employee;      
+
     if (Mode.EDIT == this.mode) {
-      const payload = this.saveForm.getRawValue();            
       this.employeeSerivce.updateEmployee(payload).subscribe((res) => {
-        alert('แก้ไขข้อมูลพนักงาน สำเร็จ!!');
+        this.messageService.add({ severity: 'success', summary: 'Success', detail: 'Message Content' });
         this.route.navigate(['/']);
       });
     } else {
-      const payload = this.saveForm.getRawValue();
       this.employeeSerivce.addEmployee(payload).subscribe((res) => {
-        alert('บันทึกข้อมูลพนักงาน สำเร็จ!!');
+        this.messageService.add({ severity: 'success', summary: 'Success', detail: 'Message Content' });
         this.saveForm.reset();
       });
     }

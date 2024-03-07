@@ -5,6 +5,7 @@ import { ButtonModule } from 'primeng/button';
 import { TableModule } from 'primeng/table';
 import { EmployeeService } from '../../services/employee.service';
 import { Employee } from '../../model/employee';
+import { MessageService } from 'primeng/api';
 
 @Component({
   selector: 'app-search-table',
@@ -24,6 +25,7 @@ export class SearchTableComponent {
 
   route = inject(Router);
   employeeService = inject(EmployeeService);
+  messageService = inject(MessageService);
 
   onSave() {
     this.route.navigate(['save']);
@@ -31,9 +33,9 @@ export class SearchTableComponent {
 
   onDelete(id: number) {
     this.employeeService.deleteEmployeeById(id).subscribe(res => {
-      alert("ลบข้อมูลพนักงาน สำเร็จ!")
       this.employees = res
       this.employeesEvent.emit(this.employees)
+      this.messageService.add({ severity: 'success', summary: 'Success', detail: 'Message Content' });
     })
   }
 }

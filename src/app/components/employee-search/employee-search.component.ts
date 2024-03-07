@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, inject } from '@angular/core';
 import { Department } from '../../model/department';
 import { RouterOutlet } from '@angular/router';
 import {
@@ -44,8 +44,10 @@ export class EmployeeSearchComponent implements OnInit {
   Gender = Gender;
   department?: string;
   employees!: Employee[];
-
   departments: Department[] = DEPARTMENT_TYPE
+
+  fb = inject(FormBuilder)
+  employeeService = inject(EmployeeService)
 
   employeeForm: FormGroup = this.fb.group({
     firstname: new FormControl(null),
@@ -53,11 +55,6 @@ export class EmployeeSearchComponent implements OnInit {
     department: new FormControl(null),
     gender: new FormControl(null),
   });
-
-  constructor(
-    private employeeService: EmployeeService,
-    private fb: FormBuilder
-  ) {}
 
   ngOnInit(): void {
     this.onQueryTable();
