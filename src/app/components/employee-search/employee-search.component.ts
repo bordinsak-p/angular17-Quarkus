@@ -45,10 +45,10 @@ export class EmployeeSearchComponent implements OnInit {
   Gender = Gender;
   department?: string;
   employees!: Employee[];
-  departments: Department[] = DEPARTMENT_TYPE
+  departments: Department[] = DEPARTMENT_TYPE;
 
-  fb = inject(FormBuilder)
-  employeeService = inject(EmployeeService)
+  fb = inject(FormBuilder);
+  employeeService = inject(EmployeeService);
 
   employeeForm: FormGroup = this.fb.group({
     firstname: new FormControl(null),
@@ -59,10 +59,12 @@ export class EmployeeSearchComponent implements OnInit {
 
   ngOnInit(): void {
     this.onQueryTable();
-    this.employeeForm.valueChanges.pipe(
-      debounceTime(200),
-      switchMap(() => this.onSearch())
-    ).subscribe((res: Employee[]) => this.employees = res)
+    this.employeeForm.valueChanges
+      .pipe(
+        debounceTime(200),
+        switchMap(() => this.onSearch())
+      )
+      .subscribe((res: Employee[]) => (this.employees = res));
   }
 
   onQueryTable(): void {
@@ -70,9 +72,9 @@ export class EmployeeSearchComponent implements OnInit {
       this.employees = res;
     });
   }
-  
+
   onQueryTableAfterDelete(employee: any) {
-    this.employees = employee
+    this.employees = employee;
     this.onQueryTable();
   }
 
@@ -90,13 +92,10 @@ export class EmployeeSearchComponent implements OnInit {
       httpParams = httpParams.append('gender', employeeData.gender);
     }
     if (employeeData.department) {
-      httpParams = httpParams.append(
-        'department',
-        employeeData.department.code
-      );
-    }  
+      httpParams = httpParams.append('department',employeeData.department.code);
+    }
 
-    return this.employeeService.getEmployeeSearch(httpParams)
+    return this.employeeService.getEmployeeSearch(httpParams);
   }
 
   onClear(): void {
