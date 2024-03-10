@@ -103,5 +103,6 @@ export class SaveEmployeeComponent implements OnInit {
 
   onClear(): void {
     this.saveForm.reset();
+    this.saveForm.controls['gender'].setValue(Gender.MALE)
   }
 }

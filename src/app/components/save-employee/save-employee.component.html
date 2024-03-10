@@ -64,7 +64,7 @@
     >
       <i class="pi pi-backward mr-3"></i>
     </button>
-    <button pButton pRipple label="เคลียร์" class="p-button-warning mx-1" [disabled]="btnStatus">
+    <button pButton pRipple label="เคลียร์" class="p-button-warning mx-1" [disabled]="btnStatus" (click)="onClear()">
       <i class="pi pi-eraser mr-3"></i>
     </button>
     <button pButton pRipple label="บันทึก" class="p-button-success mx-1" (click)="onSaveAndEdit()">
