@@ -90,12 +90,12 @@ export class SaveEmployeeComponent implements OnInit {
 
     if (Mode.EDIT == this.mode) {
       this.employeeSerivce.updateEmployee(payload).subscribe((res) => {
-        this.messageService.add({ severity: 'success', summary: 'Success', detail: 'Message Content' });
+        this.messageService.add({ severity: 'success', summary: 'Message', detail: 'Add employee success.' });
         this.route.navigate(['/']);
       });
     } else {
       this.employeeSerivce.addEmployee(payload).subscribe((res) => {
-        this.messageService.add({ severity: 'success', summary: 'Success', detail: 'Message Content' });
+        this.messageService.add({ severity: 'success', summary: 'Message', detail: 'Edit employee success.' });
         this.saveForm.reset();
       });
     }

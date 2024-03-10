@@ -20,6 +20,7 @@ import { ButtonModule } from 'primeng/button';
 import { SearchTableComponent } from '../search-table/search-table.component';
 import { HttpParams } from '@angular/common/http';
 import { DEPARTMENT_TYPE } from '../../constants/department.constant';
+import { Observable, debounceTime, switchMap } from 'rxjs';
 
 @Component({
   selector: 'app-employee-search',
@@ -58,6 +59,10 @@ export class EmployeeSearchComponent implements OnInit {
 
   ngOnInit(): void {
     this.onQueryTable();
+    this.employeeForm.valueChanges.pipe(
+      debounceTime(200),
+      switchMap(() => this.onSearch())
+    ).subscribe((res: Employee[]) => this.employees = res)
   }
 
   onQueryTable(): void {
@@ -71,7 +76,7 @@ export class EmployeeSearchComponent implements OnInit {
     this.onQueryTable();
   }
 
-  onSearch(): void {
+  onSearch(): Observable<Employee[]> {
     const employeeData = this.employeeForm.getRawValue();
     let httpParams = new HttpParams();
 
@@ -91,9 +96,7 @@ export class EmployeeSearchComponent implements OnInit {
       );
     }  
 
-    this.employeeService.getEmployeeSearch(httpParams).subscribe((res: Employee[]) => {
-      this.employees = res
-    });
+    return this.employeeService.getEmployeeSearch(httpParams)
   }
 
   onClear(): void {
