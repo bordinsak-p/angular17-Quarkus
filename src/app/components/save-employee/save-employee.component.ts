@@ -88,17 +88,23 @@ export class SaveEmployeeComponent implements OnInit {
   onSaveAndEdit() {
     const payload = this.saveForm.getRawValue() as Employee;      
 
-    if (Mode.EDIT == this.mode) {
-      this.employeeSerivce.updateEmployee(payload).subscribe((res) => {
-        this.messageService.add({ severity: 'success', summary: 'Message', detail: 'Add employee success.' });
-        this.route.navigate(['/']);
-      });
+    if(this.saveForm.valid) {
+      if (Mode.EDIT == this.mode) {
+        this.employeeSerivce.updateEmployee(payload).subscribe(() => {
+          this.messageService.add({ severity: 'success', summary: 'Message', detail: 'Add employee success.' });
+          this.route.navigate(['/']);
+        });
+      } else {
+        this.employeeSerivce.addEmployee(payload).subscribe(() => {
+          this.messageService.add({ severity: 'success', summary: 'Message', detail: 'Edit employee success.' });
+          this.saveForm.reset();
+        });
+      }
     } else {
-      this.employeeSerivce.addEmployee(payload).subscribe((res) => {
-        this.messageService.add({ severity: 'success', summary: 'Message', detail: 'Edit employee success.' });
-        this.saveForm.reset();
-      });
+      this.messageService.add({ severity: 'error', summary: 'Message', detail: 'Please enter your data.' });
     }
+
+    
   }
 
   onClear(): void {
